@@ -1,0 +1,5 @@
+streamlit==1.37.0
+numpy==1.26.4
+pandas==2.2.2
+streamlit-lightweight-charts==0.7.20
+

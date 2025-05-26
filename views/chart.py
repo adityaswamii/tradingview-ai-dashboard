@@ -1,4 +1,4 @@
-import ast
+
 
 import pandas as pd
 import streamlit as st
@@ -14,60 +14,55 @@ COLOR_BEAR = 'rgba(239,83,80,0.9)'  # #ef5350
 # Load the TSLA stock data from the CSV file
 df = pd.read_csv("data/TSLA_data.csv", parse_dates=['timestamp'])
 
+# Convert timestamp to milliseconds for lightweight charts
+df['time'] = df['timestamp'].astype('int64') // 10 ** 9
+
 # Fill empty values in the 'direction' column with "NEUTRAL"
 df['direction'] = df['direction'].fillna("NEUTRAL")
 
 # Convert 'Support' and 'Resistance' columns from string representation of lists to actual lists
-df['Support'] = df['Support'].apply(ast.literal_eval)
-df['Resistance'] = df['Resistance'].apply(ast.literal_eval)
+df['Support'] = df['Support'].apply(eval)
+df['Resistance'] = df['Resistance'].apply(eval)
+
+# Create a dictionary for candlestick data
+candles = df[['open', 'high', 'low', 'close', 'time']].to_dict(orient='records')
+
 
 df.info()
-print(df['direction'].value_counts())
-# %%
+print(candles[0:5])  # Print the first candle data for verification
+print(type(df['Support'][0]))
+print(type(df['Resistance'][0]))
 
-# Ensure the 'timestamp' column is in datetime format
-df['timestamp'] = pd.to_datetime(df['timestamp'])
-# Sort the DataFrame by timestamp
-df.sort_values(by='timestamp', inplace=True)
-# Convert DataFrame to a list of dictionaries for lightweight charts
-candles = df[['timestamp', 'open', 'high', 'low', 'close']].to_dict(orient='records')
-# Convert timestamps to milliseconds for lightweight charts
-for candle in candles:
-    candle['timestamp'] = int(candle['timestamp'].timestamp() * 1000)
+# %%
 
 # --- CHART CONFIGURATION ---
 
+
 chartOptions = {
-    "width": 800,
-    "height": 600,
     "layout": {
+        "textColor": 'black',
         "background": {
-            "type": "solid",
-            "color": "white"
-        },
-        "textColor": "black"
-    },
-    "timeScale": {
-        "timeVisible": True,
-        "secondsVisible": False,
+            "type": 'solid',
+            "color": 'white'
+        }
     }
 }
 
 seriesCandlestickChart = [{
-    "type": "Candlestick",
-    "data": candles,
+    "type": 'Candlestick',
+    "data": candles[0:500],
     "options": {
         "upColor": COLOR_BULL,
         "downColor": COLOR_BEAR,
+        "borderVisible": False,
         "wickUpColor": COLOR_BULL,
         "wickDownColor": COLOR_BEAR
     }
 }]
 
-
-# Render the candlestick chart using the lightweight charts component
 renderLightweightCharts([
     {
         "chart": chartOptions,
         "series": seriesCandlestickChart
-    }])
+    }
+], 'candlestick')

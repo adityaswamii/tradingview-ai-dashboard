@@ -2,9 +2,9 @@
 .streamlit/secrets.toml
 
 # Python
-venv/
+/venv/
 
 # IntelliJ
-.idea/
+/.idea/
 
 #%%

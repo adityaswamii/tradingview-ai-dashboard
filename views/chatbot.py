@@ -1,5 +1,6 @@
 import contextlib
 import io
+import random
 
 import google.generativeai as genai
 import matplotlib.pyplot as plt
@@ -7,8 +8,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-st.title("Chatbot")
-st.markdown("Ask me anything! Powered by Google Gemini.")
+st.title("TSLA Data Chatbot")
+st.markdown("Ask questions about Tesla (TSLA) stock data. Powered by Google Gemini AI.")
 st.divider()
 
 
@@ -61,6 +62,9 @@ genai.configure(api_key=st.secrets["gemini"]["api_key"])
 
 # Initialize the GenerativeModel for the Gemini API
 model = genai.GenerativeModel("gemini-2.0-flash")
+
+
+# --- AGENTIC CHATBOT FUNCTIONALITY ---
 
 
 # def ask_gemini(messages):
@@ -120,6 +124,28 @@ def execute_code(code, df):
     except Exception as e:
         return f"⚠️ Error executing code: {e}", None
 
+
+def get_random_prompt():
+    prompts = [
+        "How many days in 2023 was TSLA bullish?",
+        "What was the highest closing price in 2022?",
+        "List the support and resistance ranges on the latest trading day.",
+        "What is the average volume on days when TSLA was bearish?",
+        "Show the number of bullish vs bearish days in January 2024.",
+        "Did TSLA break above resistance more often than it dipped below support in 2023?",
+        "Which day had the largest candlestick range in 2025?",
+        "How often did the closing price land within the support/resistance band in 2023?",
+        "When was the first day in 2024 TSLA was marked as LONG direction?",
+        "Count how many times TSLA closed higher than the previous day in 2023.",
+        "What is the last date in the dataset?",
+    ]
+    return random.choice(prompts)
+
+
+# Clear chat button functionality
+def clear_chat():
+    st.session_state.messages = []
+
 # --- CHATBOT INTERFACE ---
 
 # Initialize session state for chat messages if not already present
@@ -132,7 +158,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Handle user input from the chat input box
-if prompt := st.chat_input("Ask about TSLA..."):
+if prompt := st.chat_input("eg. " + get_random_prompt()):
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     
@@ -158,12 +184,6 @@ if prompt := st.chat_input("Ask about TSLA..."):
                     st.success(f"Answer: {result}")
                 
                 st.session_state.messages.append({"role": "assistant", "content": str(result)})
-
-
-
-# Clear chat button functionality
-def clear_chat():
-    st.session_state.messages = []
 
 
 # Add a clear chat button

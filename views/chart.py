@@ -4,14 +4,17 @@ import pandas as pd
 import streamlit as st
 from streamlit_lightweight_charts import renderLightweightCharts
 
-st.title('TSLA Stock Price Chart')
+st.title('Interactive TSLA Stock Chart')
 st.divider()
 col1, col2, col3 = st.columns(3)
 show_markers = col1.toggle('Show Markers', value=False)
 show_support = col2.toggle('Show Support Band', value=False)
 show_resistance = col3.toggle('Show Resistance Band', value=False)
-select_timeframe = col1.selectbox('Select timeframe', ['15D', '1M', '3M', '1Y', '500D'])
-select_date = col3.date_input('Select date', value=pd.to_datetime('2025-05-02'), max_value=pd.to_datetime('2025-05-02'),
+c1, c2, c3, c4, c5 = st.columns(5)
+select_timeframe = c1.selectbox('Select timeframe', ['15D', '1M', '3M', '1Y', '500D'])
+cont = c3.container(height=100, border=False)
+cont.image('assets/img.png', width=100)
+select_date = c5.date_input('Select date', value=pd.to_datetime('2025-05-02'), max_value=pd.to_datetime('2025-05-02'),
                               min_value=pd.to_datetime('2022-09-15'))
 
 # --- DATA PREPROCESSING ---

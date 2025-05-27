@@ -12,5 +12,12 @@ You can find my resume below and other projects on my [GitHub](https://www.githu
             
             """)
 col1, col2, col3, col4 = st.columns(4)
-col1.download_button("Download Resume", data="assets/AdityaSwami_CV_Apr25.pdf", file_name="AdityaSwami_CV_Apr25.pdf")
+with open("assets/AdityaSwami_CV_Apr25.pdf", "rb") as f:
+    pdf_bytes = f.read()
+col1.download_button(
+    label="Download Resume",
+    data=pdf_bytes,
+    file_name="AdityaSwami_CV_Apr25.pdf",
+    mime="application/pdf"
+)
 col4.feedback("faces")

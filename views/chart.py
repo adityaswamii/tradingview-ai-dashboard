@@ -5,9 +5,14 @@ import streamlit as st
 from streamlit_lightweight_charts import renderLightweightCharts
 
 st.title('TSLA Stock Price Chart')
-show_markers = st.checkbox('Show Markers', value=False)
-show_support = st.checkbox('Show Support', value=False)
-show_resistance = st.checkbox('Show Resistance', value=False)
+st.divider()
+col1, col2, col3 = st.columns(3)
+show_markers = col1.toggle('Show Markers', value=False)
+show_support = col2.toggle('Show Support Band', value=False)
+show_resistance = col3.toggle('Show Resistance Band', value=False)
+select_timeframe = col1.selectbox('Select timeframe', ['15D', '1M', '3M', '1Y', '500D'])
+select_date = col3.date_input('Select date', value=pd.to_datetime('2025-05-02'), max_value=pd.to_datetime('2025-05-02'),
+                              min_value=pd.to_datetime('2022-09-15'))
 
 # --- DATA PREPROCESSING ---
 
@@ -75,9 +80,15 @@ resistance_max_line = df[['time', 'resistance_max']].rename(columns={'resistance
 # --- CHART CONFIGURATION ---
 
 # total number of rows in the dataframe
-total_count = len(candles) - 1  # 660
-# number of candles to display on the chart
-candle_count = 50  # cannot be more than 500, otherwise the chart will not render properly
+date_diff = (pd.to_datetime('2025-05-02') - pd.to_datetime(select_date)).days
+total_count = len(candles) - date_diff  # 660
+# number of candles to display in the chart
+candle_count = 500 if select_timeframe == '500D' \
+    else 365 if select_timeframe == '1Y' \
+    else 90 if select_timeframe == '3M' \
+    else 30 if select_timeframe == '1M' \
+    else 15  # default to 15D if '15D' is selected
+start_range = total_count - candle_count if total_count - candle_count > 0 else 0
 
 
 # Define chart options
@@ -118,7 +129,7 @@ chartOptions = {
 seriesCandlestickChart = [
     {
         "type": 'Candlestick',
-        "data": candles[total_count - candle_count:],
+        "data": candles[start_range:total_count],
         "options": {
             "upColor": COLOR_BULL,
             "downColor": COLOR_BEAR,
@@ -137,41 +148,41 @@ seriesCandlestickChart = [
                 "shape": 'arrowUp' if candle['direction'] == 0 else 'arrowDown' if candle[
                                                                                        'direction'] == 1 else 'circle',
                 "size": 0.5 if show_markers else 0,
-            } for candle in candles[total_count - candle_count:]
+            } for candle in candles[start_range:total_count]
         ],
     },
     {
         "type": "Line",
-        "data": support_max_line[total_count - candle_count:] if show_support else [],
+        "data": support_max_line[start_range:total_count] if show_support else [],
         "options": {
-            "lineStyle": 3,
+            "lineStyle": 0,
             "color": "rgba(0,255,0,0.2)",
-            "lineWidth": 1,
+            "lineWidth": 1.5,
         },
     },
     {
         "type": "Line",
-        "data": support_min_line[total_count - candle_count:] if show_support else [],
+        "data": support_min_line[start_range:total_count] if show_support else [],
         "options": {
-            "lineStyle": 3,
+            "lineStyle": 0,
             "color": "rgba(0,255,0,0.2)",
             "lineWidth": 1,
         }
     },
     {
         "type": "Line",
-        "data": resistance_max_line[total_count - candle_count:] if show_resistance else [],
+        "data": resistance_max_line[start_range:total_count] if show_resistance else [],
         "options": {
-            "lineStyle": 3,
+            "lineStyle": 0,
             "color": "rgba(255,0,0,0.2)",
-            "lineWidth": 1,
+            "lineWidth": 1.5,
         },
     },
     {
         "type": "Line",
-        "data": resistance_min_line[total_count - candle_count:] if show_resistance else [],
+        "data": resistance_min_line[start_range:total_count] if show_resistance else [],
         "options": {
-            "lineStyle": 3,
+            "lineStyle": 0,
             "color": "rgba(255,0,0,0.2)",
             "lineWidth": 1,
         }

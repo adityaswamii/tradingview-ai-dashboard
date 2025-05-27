@@ -158,7 +158,8 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Handle user input from the chat input box
-if prompt := st.chat_input("eg. " + get_random_prompt()):
+random_prompt = "eg. " + get_random_prompt()
+if prompt := st.chat_input("say something"):
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     

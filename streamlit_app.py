@@ -1,13 +1,7 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
-import json
-from streamlit_lightweight_charts import renderLightweightCharts
-from lightweight_charts.widgets import StreamlitChart
-import ast
-
 
 # --- PAGE SETUP & NAVIGATION ---
+
 
 # Page Setup
 about_page = st.Page(

@@ -4,3 +4,4 @@ pandas==2.2.2
 streamlit-lightweight-charts==0.7.20
 lightweight_charts==2.1
 protobuf~=5.29.4
+matplotlib~=3.10.3

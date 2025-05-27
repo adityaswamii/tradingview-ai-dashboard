@@ -12,5 +12,5 @@ You can find my resume below and other projects on my [GitHub](https://www.githu
             
             """)
 col1, col2, col3, col4 = st.columns(4)
-col1.download_button("Download Resume", data="data/AdityaSwami_CV_Apr25.pdf", file_name="AdityaSwami_CV_Apr25.pdf")
+col1.download_button("Download Resume", data="assets/AdityaSwami_CV_Apr25.pdf", file_name="AdityaSwami_CV_Apr25.pdf")
 col4.feedback("faces")

@@ -11,10 +11,8 @@ show_markers = col1.toggle('Show Markers', value=False)
 show_support = col2.toggle('Show Support Band', value=False)
 show_resistance = col3.toggle('Show Resistance Band', value=False)
 c1, c2, c3, c4, c5 = st.columns(5)
-select_timeframe = c1.selectbox('Select timeframe', ['15D', '1M', '3M', '1Y', '500D'])
-cont = c3.container(height=100, border=False)
-cont.image('assets/img.png', width=100)
-select_date = c5.date_input('Select date', value=pd.to_datetime('2025-05-02'), max_value=pd.to_datetime('2025-05-02'),
+select_timeframe = c5.selectbox('Select timeframe', ['15D', '1M', '3M', '1Y', '500D'])
+select_date = c1.date_input('Select date', value=pd.to_datetime('2025-05-02'), max_value=pd.to_datetime('2025-05-02'),
                               min_value=pd.to_datetime('2022-09-15'))
 
 # --- DATA PREPROCESSING ---

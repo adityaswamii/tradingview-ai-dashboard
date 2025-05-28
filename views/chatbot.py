@@ -85,10 +85,21 @@ model = genai.GenerativeModel("gemini-2.0-flash")
 #     except Exception as e:
 #         return f"❌ Gemini error: {e}"
 
-def extract_python_code(gemini_text):
-    if "```python" in gemini_text:
-        return gemini_text.split("```python")[1].split("```")[0].strip()
-    return gemini_text.strip()
+
+def get_last_message_pairs(messages, n=3):
+    """Return last `n` user-assistant message pairs."""
+    pairs = []
+    temp = {}
+    for m in reversed(messages):
+        if m["role"] == "assistant" and "user" in temp:
+            temp["assistant"] = m["content"]
+            pairs.append(temp)
+            temp = {}
+        elif m["role"] == "user":
+            temp = {"user": m["content"]}
+        if len(pairs) >= n:
+            break
+    return list(reversed(pairs))
 
 
 def generate_code(question, df_columns, sample_df):
@@ -98,6 +109,8 @@ The DataFrame columns are: {', '.join(df_columns)}.
 The 'direction' column is encoded as: LONG = 0 (Bullish), SHORT = 1 (Bearish), NEUTRAL = 2.
 The user question is: "{question}"
 Return only Python code snippet (no header or explanation), assign your answer to a variable `result`.
+Dataframe results should be assigned to `result` variable.
+If the result is a pandas Series, convert it to a DataFrame before assigning it to `result`.
 If you want to plot, create a matplotlib figure assigned to `fig`.
 Here's a sample of the data:
 {sample_df.head(3).to_markdown()}
@@ -123,6 +136,12 @@ def execute_code(code, df):
         return result, fig
     except Exception as e:
         return f"⚠️ Error executing code: {e}", None
+
+
+def extract_python_code(gemini_text):
+    if "```python" in gemini_text:
+        return gemini_text.split("```python")[1].split("```")[0].strip()
+    return gemini_text.strip()
 
 
 def get_random_prompt():

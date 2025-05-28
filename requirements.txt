@@ -5,3 +5,5 @@ streamlit-lightweight-charts==0.7.20
 lightweight_charts==2.1
 protobuf~=5.29.4
 matplotlib~=3.10.3
+google-generativeai==1.16.1
+streamlit-extras==0.6.0

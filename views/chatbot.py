@@ -9,7 +9,7 @@ import pandas as pd
 import streamlit as st
 
 st.title("TSLA Data Chatbot")
-st.markdown("Ask questions about Tesla (TSLA) stock data. Powered by Google Gemini AI.")
+st.markdown("Ask questions about the given stock data. Powered by Google Gemini AI.")
 st.divider()
 
 
@@ -155,13 +155,27 @@ def get_random_prompt():
         "List the support and resistance ranges on the latest trading day.",
         "What is the average volume on days when TSLA was bearish?",
         "Show the number of bullish vs bearish days in January 2024.",
-        "Did TSLA break above resistance more often than it dipped below support in 2023?",
+        "Did TSLA break above resistance more often than it dipped below support in \n2023?",
         "Which day had the largest candlestick range in 2025?",
-        "How often did the closing price land within the support/resistance band in 2023?",
+        "How often did the closing price land within the support/resistance band in \n2023?",
         "When was the first day in 2024 TSLA was marked as LONG direction?",
         "Count how many times TSLA closed higher than the previous day in 2023.",
-        "What is the last date in the dataset?",
-        "Create a line chart of opening and closing prices for 2024. Highlight the days where the difference between them was more than 5%, using a blue highlight when opening was higher and purple highlight when closer was higher. Also use a red dot for bearish and green dot for bullish. "
+        "What was the average opening price in 2024?",
+        "Show the top 5 days with the highest trading volume in 2023.",
+        "What was the average daily range (high - low) in 2024?",
+        "How many days in 2023 had a closing price above the previous day's high?",
+        "What was the average percentage change in closing price from the previous \nday in 2024?",
+        "What was the average support and resistance range in 2023?",
+        "Show the top 10 days with the highest percentage change in closing price \nin 2024.",
+        "What was the average daily volume in 2023?",
+        "How many days in 2024 had a closing price above the opening price?",
+        "What was the average daily percentage change in closing price in 2023?",
+        '''
+        Lesgo. Create a line chart of opening and closing prices for 2024.
+        Highlight the days where the difference between them was more than 5%,
+        using a blue highlight when opening was higher and purple highlight
+        when closing was higher. Also use a red dot for bearish and green dot
+        for bullish. '''
     ]
     return random.choice(prompts)
 
@@ -194,7 +208,9 @@ if not prompt:
             "Ask me anything about Tesla stock data, like trends, support/resistance levels, or specific trading days. "
             "I can also generate Python code to analyze the data and plot charts. \n\n"
             "Here's a random prompt to get you started: \n\n"
-            "**\"" + get_random_prompt() + "\"**"
+        )
+        st.code(
+            get_random_prompt()
         )
 else:
     st.chat_message("user").markdown(prompt)

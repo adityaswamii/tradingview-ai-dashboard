@@ -112,6 +112,9 @@ Return only Python code snippet (no header or explanation), assign your answer t
 Dataframe results should be assigned to `result` variable.
 If the result is a pandas Series, convert it to a DataFrame before assigning it to `result`.
 If you want to plot, create a matplotlib figure assigned to `fig`.
+If you receive a greeting or a question about your capabilities,
+then assign the value False to a variable 'show_code' and respond to the user accordingly.
+In all other cases, assign the value True to 'show_code'.
 Here's a sample of the data:
 {sample_df.head(3).to_markdown()}
 """
@@ -133,7 +136,8 @@ def execute_code(code, df):
             exec(code, {}, local_vars)
         result = local_vars.get("result", None)
         fig = local_vars.get("fig", None)
-        return result, fig
+        show_code = local_vars.get("show_code", None)
+        return result, fig, show_code
     except Exception as e:
         return f"⚠️ Error executing code: {e}", None
 
@@ -165,7 +169,9 @@ def get_random_prompt():
 def clear_chat():
     st.session_state.messages = []
 
+
 # --- CHATBOT INTERFACE ---
+
 
 # Initialize session state for chat messages if not already present
 if "messages" not in st.session_state:
@@ -177,8 +183,20 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Handle user input from the chat input box
-random_prompt = "eg. " + get_random_prompt()
-if prompt := st.chat_input("say something"):
+
+prompt = st.chat_input("say something")
+
+if not prompt:
+    with st.chat_message("assistant"):
+        st.markdown(
+            "👋 Hi! I'm your TSLA stock data chatbot. Ask me anything about Tesla stock data, like trends, support/resistance levels, or specific trading days. "
+            "I can also generate Python code to analyze the data and plot charts. \n\n"
+            "Here's a random prompt to get you started: \n\n"
+            # )
+            # st.markdown(
+            "**\"" + get_random_prompt() + "\"**"
+        )
+else:
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     
@@ -191,10 +209,11 @@ if prompt := st.chat_input("say something"):
             with st.spinner("Thinking..."):
                 sample_df = df.drop(columns=["Support", "Resistance"])  # avoid clutter
                 code = generate_code(prompt, df.columns.tolist(), sample_df)
-                st.code(code, language="python")  # optional: show code
-                
                 code_to_run = extract_python_code(code)
-                result, fig = execute_code(code_to_run, df)
+                result, fig, show_code = execute_code(code_to_run, df)
+                
+                if show_code:
+                    st.code(code, language="python")  # optional: show code
                 
                 if fig:
                     st.pyplot(fig)

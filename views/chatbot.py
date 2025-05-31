@@ -161,6 +161,7 @@ def get_random_prompt():
         "When was the first day in 2024 TSLA was marked as LONG direction?",
         "Count how many times TSLA closed higher than the previous day in 2023.",
         "What is the last date in the dataset?",
+        "Create a line chart of opening and closing prices for 2024. Highlight the days where the difference between them was more than 5%, using a blue highlight when opening was higher and purple highlight when closer was higher. Also use a red dot for bearish and green dot for bullish. "
     ]
     return random.choice(prompts)
 

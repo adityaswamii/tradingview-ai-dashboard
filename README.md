@@ -77,4 +77,7 @@ You can ask the chatbot questions like:
 
 - This is a personal project and not production-ready.
 - The Gemini API is used for natural language processing and may incur costs based on usage.
-- Only supports the TSLA dataset currently, but can be extended to other stocks with some modifications.
+- Only supports a static TSLA dataset (upto 2nd May, 2025) currently, but can be extended to other stocks with some
+  modifications.
+- Future improvements could include more advanced analytics, real-time stock data, and context history for the chatbot.
+

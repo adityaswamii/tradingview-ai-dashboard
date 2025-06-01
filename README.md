@@ -5,12 +5,12 @@ API.
 
 ---
 
-## 🚀 Features
+## 🚀 Features (and tech used)
 
-- 📈 Interactive charts showing TSLA price trends, support, and resistance levels
-- 🤖 Gemini-powered AI chatbot to answer natural language questions about the data
-- 💾 Efficient data loading and preprocessing using caching
-- 🧪 Built as a personal project for experimentation with finance and AI
+- 📈 Interactive charts showing TSLA price trends, support, and resistance levels (using a [streamlit wrapper](https://github.com/freyastreamlit/streamlit-lightweight-charts) of TradingView's [LightWeight Charts](https://tradingview.github.io/lightweight-charts/))
+- 🤖 Gemini-powered AI chatbot to answer natural language questions about the data (using Google's Gemini 2.0 flash model)
+- 💾 Efficient data loading and preprocessing using caching (using Pandas, NumPy)
+- 🧪 Built as a personal project for experimentation with finance and AI 
 
 ---
 
@@ -60,7 +60,7 @@ You can ask the chatbot questions like:
    ```toml
    [gemini]
    api_key = "your_api_key_here"
-    demo_mode = "false"
+   demo_mode = "false"
    ```
    Set demo_mode = "true" if you want to disable live calls and test the UI, and make sure to replace
    `your_api_key_here` with your actual Gemini API key.

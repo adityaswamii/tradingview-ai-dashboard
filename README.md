@@ -47,12 +47,12 @@ You can ask the chatbot questions like:
    ```bash
    git clone https://github.com/your-username/tradingview-ai-dashboard.git
    cd tradingview-ai-dashboard
-    ```
+   ```
 
 2. **Install dependencies:**
    ```bash
-    pip install -r requirements.txt
-    ```
+   pip install -r requirements.txt
+   ```
 
 3. **Set up your Gemini API key**
    Create a file at `.streamlit/secrets.toml` and add the following:
@@ -68,8 +68,8 @@ You can ask the chatbot questions like:
 
 4. **Run the Streamlit app:**
    ```bash
-    streamlit run streamlit_app.py
-    ```
+   streamlit run streamlit_app.py
+   ```
 
 ---
 

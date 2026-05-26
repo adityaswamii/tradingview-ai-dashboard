@@ -10,7 +10,6 @@ API.
 - 📈 Interactive charts showing TSLA price trends, support, and resistance levels (using a [streamlit wrapper](https://github.com/freyastreamlit/streamlit-lightweight-charts) of TradingView's [LightWeight Charts](https://tradingview.github.io/lightweight-charts/))
 - 🤖 Gemini-powered AI chatbot to answer natural language questions about the data (using Google's [Gemini 2.0 flash](https://ai.google.dev) model)
 - 💾 Efficient data loading and preprocessing using caching (using [Pandas](https://pandas.pydata.org), [NumPy](https://numpy.org))
-- 🧪 Built as a personal project for experimentation with finance and AI 
 
 ---
 
